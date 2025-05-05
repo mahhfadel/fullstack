@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Container, TextField, Typography } from '@mui/material';
 
 const SearchCrypto = () => {
   const inputRef = useRef();
@@ -16,29 +16,37 @@ const SearchCrypto = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 5 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Buscar Criptomoeda
-        </Typography>
-        <TextField
-          label="Digite o nome (ex: bitcoin)"
-          variant="outlined"
-          inputRef={inputRef}
-          fullWidth
-        />
-        <Button variant="contained" color="primary" onClick={handleSearch}>
-          Buscar
-        </Button>
-      </Box>
-    </Container>
+    <Box sx={{ minHeight: '100vh', backgroundColor: '#fdec6f', display: 'flex', alignItems: 'center' }}>
+      <Container maxWidth="sm">
+        <Card elevation={4}>
+          <CardContent>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <Typography variant="h4" component="h1" align="center">
+                Buscar Criptomoeda
+              </Typography>
+              <TextField
+                label="Digite o nome (ex: bitcoin)"
+                variant="outlined"
+                inputRef={inputRef}
+                fullWidth
+              />
+              <Button
+                variant="contained"
+                sx={{ //sx permite que estilize um componente do MUI usando uma sintaxe de objeto JavaScript
+                    backgroundColor: '#1f0b0c',
+                    '&:hover': {
+                    backgroundColor: '#361f2d',
+                    },
+                }}
+                onClick={handleSearch}
+                >
+                Buscar
+                </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
   );
 };
 
