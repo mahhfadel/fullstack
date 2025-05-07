@@ -27,39 +27,52 @@ const SearchCryptoComponent = () => {
 
         <Card sx={{ boxShadow: '0 0 12px rgba(255, 0, 170, 0.4)' }}>
           <CardContent sx={{ backgroundColor: '#1A1F2B' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <TextField
-                label="Search Crypto"
-                variant="outlined"
-                inputRef={inputRef}
-                fullWidth
-                error={hasError}
-                helperText={hasError ? "This field required" : ""}
-                sx={{
-                  input: { color: '#E3E3FF' },
-                  label: {
-                    color: '#E3E3FF',
-                    '&.Mui-focused': { color: '#E3E3FF' },
-                  },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': { borderColor: '#E3E3FF' },
-                    '&:hover fieldset': { borderColor: '#E3E3FF' },
-                    '&.Mui-focused fieldset': { borderColor: '#E3E3FF' },
-                  },
-                }}
-              />
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: '#FF00AA',
-                  '&:hover': { backgroundColor: '#ad0174' },
-                }}
-                onClick={handleSearch}
-              >
-                Search
-              </Button>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+  <TextField
+    label="Search Crypto"
+    variant="outlined"
+    inputRef={inputRef}
+    fullWidth
+    error={hasError}
+    helperText={hasError ? "This field required" : ""}
+    sx={{
+      input: { color: '#E3E3FF' },
+      label: {
+        color: '#E3E3FF',
+        '&.Mui-focused': { color: '#E3E3FF' },
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': { borderColor: '#E3E3FF' },
+        '&:hover fieldset': { borderColor: '#E3E3FF' },
+        '&.Mui-focused fieldset': { borderColor: '#E3E3FF' },
+      },
+    }}
+  />
 
-            </Box>
+  <Button
+    variant="contained"
+    sx={{
+      backgroundColor: '#FF00AA',
+      '&:hover': { backgroundColor: '#ad0174' },
+    }}
+    onClick={handleSearch}
+  >
+    Search
+  </Button>
+
+  {loading && (
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <CircularProgress sx={{ color: '#FF00AA' }} />
+    </Box>
+  )}
+
+  {apiError && (
+    <Typography color="error" align="center">
+      {apiError}
+    </Typography>
+  )}
+</Box>
+
           </CardContent>
         </Card>
 
