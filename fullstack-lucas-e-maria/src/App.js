@@ -26,13 +26,15 @@ export default App;
 */
 
 import React from 'react';
-import SearchCrypto from './components/SearchCrypto';
+import SearchCryptoComponent from './components/SearchCryptoComponent';
+import { CryptoProvider } from './contexts/SearchCryptoContext';
+
 
 function App() {
   return (
-    <div>
-      <SearchCrypto />
-    </div>
+    <CryptoProvider>
+      <SearchCryptoComponent />
+    </CryptoProvider>
   );
 }
 
