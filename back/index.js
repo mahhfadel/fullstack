@@ -1,6 +1,11 @@
 const express = require('express');
+const connectDB = require('./src/config/database');
+
 const app = express();
 const port = 8000;
+
+// Conectar ao MongoDB Atlas
+connectDB();
 
 app.get('/', (req, res) => {
   res.send('Olá, mundo!');
