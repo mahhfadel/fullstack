@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-function PasswordField() {
+function PasswordField({ label = "Senha" }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePassword = () => {
@@ -11,7 +11,7 @@ function PasswordField() {
 
   return (
     <TextField
-      label="Senha"
+      label={label}
       type={showPassword ? 'text' : 'password'}
       variant="outlined"
       fullWidth

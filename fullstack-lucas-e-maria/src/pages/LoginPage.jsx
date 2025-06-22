@@ -31,7 +31,7 @@ function Login() {
                             }}
                         />
 
-                        <PasswordField />
+                        <PasswordField label="Senha"/>
 
                         
                         <Button
