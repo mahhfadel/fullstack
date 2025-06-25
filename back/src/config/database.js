@@ -1,23 +1,16 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-require('dotenv').config(); // Caso use .env
+// src/config/database.js
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-const uri = process.env.MONGO_URI
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const uri = process.env.MONGO_URI;
 
 async function connectDB() {
   try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Conectado ao MongoDB Atlas!");
-  } catch (err) {
-    console.error("Erro ao conectar ao MongoDB Atlas:", err);
+    await mongoose.connect(uri);
+    console.log('✅ Conectado ao MongoDB Atlas com Mongoose');
+  } catch (error) {
+    console.error('❌ Erro ao conectar ao MongoDB Atlas:', error);
+    throw error;
   }
 }
 
