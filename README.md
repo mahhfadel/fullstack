@@ -45,5 +45,15 @@ npm install
 4. **Inicie o servidor de desenvolvimento:**
 npm start
 
+5. **Abra um novo prompt:**
+
+6. **Acesse o repositorio do back:**
+cd back
+
+7. **Instale as dependências:**
+npm install
+
+8. **Inicie o servidor de desenvolvimento:**
+npm run dev
 
 A aplicação será aberta em http://localhost:3000.
