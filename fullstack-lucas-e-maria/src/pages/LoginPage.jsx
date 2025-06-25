@@ -1,9 +1,52 @@
 import React, { useRef, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PasswordField from '../components/PasswordField';
 import { Box, Button, Card, CardContent, Container, TextField, Typography } from '@mui/material';
 
 function Login() {
+    const emailRef = useRef();
+    const senhaRef = useRef();
+    const [erro, setErro] = useState('');
+    const navigate = useNavigate();
+
+    const handleLogin = async () => {
+        const email = emailRef.current.value;
+        const senha = senhaRef.current.value;
+
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailValido) {
+            setErro('Digite um e-mail válido.');
+            return;
+        }
+
+        // if (!senha || senha.length < 6) {
+        //     setErro('A senha deve ter no mínimo 6 caracteres.');
+        //     return;
+        // }
+
+
+        try {
+            const resposta = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, senha }),
+            });
+
+            const dados = await resposta.json();
+
+            if (!resposta.ok) {
+            setErro(dados.message || 'Erro ao fazer login');
+            return;
+            }
+
+            localStorage.setItem('token', dados.token); 
+            navigate('/home ');
+        } catch (err) {
+            setErro('Erro ao conectar com o servidor.');
+            console.error(err);
+        }
+    };
+
     return (
         <Box sx={{ minHeight: '100vh', background: 'linear-gradient(to bottom, #0B0C10, #1F2235)', display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center'}}>
             <Typography variant="h2" component="h1" align="center" color='#E3E3FF' marginBottom='32px'>
@@ -17,6 +60,7 @@ function Login() {
                             label="Login"
                             variant="outlined"
                             fullWidth
+                            inputRef={emailRef}
                             sx={{
                             input: { color: '#E3E3FF' },
                             label: {
@@ -31,11 +75,13 @@ function Login() {
                             }}
                         />
 
-                        <PasswordField label="Senha"/>
+                        <PasswordField label="Senha" ref={senhaRef}/>
 
+                        {erro && <Typography color="error">{erro}</Typography>}
                         
                         <Button
                             variant="contained"
+                            onClick={handleLogin}
                             sx={{
                             backgroundColor: '#FF00AA',
                             '&:hover': { backgroundColor: '#ad0174' },
@@ -47,17 +93,17 @@ function Login() {
                             <Typography sx={{ color: 'white' }}>
                                 Não tem uma conta?{' '}
                                 <Link
-                                to="/criar-conta"
-                                style={{
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                    textDecoration: 'underline',
-                                }}
+                                    to="/criar-conta"
+                                    style={{
+                                        color: 'white',
+                                        fontWeight: 'bold',
+                                        textDecoration: 'underline',
+                                    }}
                                 >
-                                Crie aqui
+                                    Crie aqui
                                 </Link>
                             </Typography>
-                            </Box>
+                        </Box>
 
                     </Box>
                 </CardContent>

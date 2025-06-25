@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { TextField, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-function PasswordField({ label = "Senha" }) {
+const PasswordField = forwardRef(({ label = "Senha" }, ref) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePassword = () => {
@@ -15,6 +15,7 @@ function PasswordField({ label = "Senha" }) {
       type={showPassword ? 'text' : 'password'}
       variant="outlined"
       fullWidth
+      inputRef={ref}
       sx={{
         input: { color: '#E3E3FF' },
         label: {
@@ -42,6 +43,6 @@ function PasswordField({ label = "Senha" }) {
       }}
     />
   );
-}
+});
 
 export default PasswordField;
