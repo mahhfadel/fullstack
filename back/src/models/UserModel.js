@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   senha: { type: String, required: true },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
 }, {
   timestamps: true
 });
@@ -20,5 +21,9 @@ userSchema.pre('save', async function (next) {
     next(error);
   }
 });
+
+userSchema.methods.verificarSenha = async function (senhaDigitada) {
+  return await bcrypt.compare(senhaDigitada, this.senha);
+};
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,6 +1,9 @@
 const express = require('express');
 const connectDB = require('./src/config/database');
+
+//rotas
 const userRoutes = require('./src/routes/userRoutes');
+const authRoutes = require('./src/routes/authRoutes');
 
 const app = express();
 const port = 8000;
@@ -14,6 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', userRoutes);
+app.use('/login', authRoutes);
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
