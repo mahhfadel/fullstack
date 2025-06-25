@@ -29,12 +29,12 @@ const SearchCryptoComponent = () => {
           <CardContent sx={{ backgroundColor: '#1A1F2B' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
   <TextField
-    label="Search Crypto"
+    label="Buscar Crypto"
     variant="outlined"
     inputRef={inputRef}
     fullWidth
     error={hasError}
-    helperText={hasError ? "This field required" : ""}
+    helperText={hasError ? "Campo obrigatório" : ""}
     sx={{
       input: { color: '#E3E3FF' },
       label: {
@@ -57,7 +57,7 @@ const SearchCryptoComponent = () => {
     }}
     onClick={handleSearch}
   >
-    Search
+    Pesquisar
   </Button>
 
   {loading && (

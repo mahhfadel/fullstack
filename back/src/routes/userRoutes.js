@@ -30,7 +30,12 @@ router.post('/', async (req, res) => {
     }
 
     // Cria o usuário
-    const novoUsuario = new User({ nome, email, senha });
+    const novoUsuario = new User({
+      nome: req.body.nome,
+      email: req.body.email,
+      senha: senhaCriptografada,
+      role: 'user'
+    });
     await novoUsuario.save();
 
     res.status(201).json({ message: 'Usuário criado com sucesso!', usuario: novoUsuario });

@@ -19,11 +19,6 @@ function Login() {
             return;
         }
 
-        // if (!senha || senha.length < 6) {
-        //     setErro('A senha deve ter no mínimo 6 caracteres.');
-        //     return;
-        // }
-
 
         try {
             const resposta = await fetch('/login', {
