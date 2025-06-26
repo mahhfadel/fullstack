@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
+const { autenticarToken } = require('../middleware/authMiddleware');
 
 // POST /login
 router.post('/', async (req, res) => {
@@ -34,6 +35,10 @@ router.post('/', async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Erro ao realizar login.' });
   }
+});
+
+router.get('/validate-token', autenticarToken, (req, res) => {
+  res.status(200).json({ user: req.user });
 });
 
 module.exports = router;
