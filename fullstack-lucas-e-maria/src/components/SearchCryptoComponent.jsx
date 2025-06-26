@@ -1,11 +1,14 @@
 import React, { useRef, useState, useContext } from 'react';
-import { Box, Button, Card, CardContent, Container, TextField, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, Card, CardContent, Container, TextField, Typography, CircularProgress,IconButton  } from '@mui/material';
 import { CryptoContext } from '../contexts/SearchCryptoContext';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
 
 const SearchCryptoComponent = () => {
   const inputRef = useRef();
   const [hasError, setHasError] = useState(false);
   const { fetchCrypto, cryptoData, loading, apiError } = useContext(CryptoContext);
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     const query = inputRef.current.value.trim();
@@ -18,9 +21,32 @@ const SearchCryptoComponent = () => {
     fetchCrypto(query);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
     <Box sx={{ minHeight: '100vh', background: 'linear-gradient(to bottom, #0B0C10, #1F2235)', display: 'flex', alignItems: 'center' }}>
       <Container maxWidth="sm">
+        <IconButton
+          onClick={handleLogout}
+          sx={{
+            position: 'fixed',
+            top: 16,
+            right: 16,
+            zIndex: 9999,
+            backgroundColor: 'transparent',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: 'transparent',
+              opacity: 0.8,
+            },
+          }}
+        >
+          <LogoutIcon fontSize="large" />
+        </IconButton>
+
         <Typography variant="h2" component="h1" align="center" color='#E3E3FF' marginBottom='32px'>
           Crypto Coins Master
         </Typography>
