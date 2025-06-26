@@ -248,3 +248,4 @@ const SearchCryptoComponent = () => {
 }
 
 export default SearchCryptoComponent
+//
