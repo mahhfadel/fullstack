@@ -1,29 +1,39 @@
-import React, { useRef, useState, useContext } from 'react';
-import { Box, Button, Card, CardContent, Container, TextField, Typography, CircularProgress,IconButton  } from '@mui/material';
-import { CryptoContext } from '../contexts/SearchCryptoContext';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
+import React, { useRef, useState, useContext, useEffect } from 'react'
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  TextField,
+  Typography,
+  CircularProgress,
+  IconButton,
+} from '@mui/material'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { useNavigate } from 'react-router-dom'
+import { CryptoContext } from '../contexts/SearchCryptoContext'
 
 const SearchCryptoComponent = () => {
-  const inputRef = useRef();
-  const [hasError, setHasError] = useState(false);
-  const { fetchCrypto, cryptoData, loading, apiError } = useContext(CryptoContext);
-  const [searchHistory, setSearchHistory] = useState([]);
-  const navigate = useNavigate();
+  const inputRef = useRef()
+  const [hasError, setHasError] = useState(false)
+  const { fetchCrypto, cryptoData, loading, apiError } = useContext(CryptoContext)
+  const [searchHistory, setSearchHistory] = useState([])
+  const navigate = useNavigate()
 
   const handleSearch = () => {
-    const query = inputRef.current.value.trim();
+    const query = inputRef.current.value.trim()
     if (!query) {
-      setHasError(true);
-      return;
+      setHasError(true)
+      return
     }
-    setHasError(false);
-    fetchCrypto(query);
-  };
+    setHasError(false)
+    fetchCrypto(query)
+  }
 
   const handleClearHistory = () => {
-    setSearchHistory([]);
-  };
+    setSearchHistory([])
+  }
 
   useEffect(() => {
     if (cryptoData) {
@@ -31,20 +41,19 @@ const SearchCryptoComponent = () => {
         name: cryptoData.name,
         symbol: cryptoData.symbol.toUpperCase(),
         price: cryptoData.market_data.current_price.usd,
-      };
+      }
 
-      // Evita duplicatas
       setSearchHistory((prev) => {
-        const exists = prev.some((item) => item.name === newEntry.name);
-        return exists ? prev : [...prev, newEntry];
-      });
+        const exists = prev.some((item) => item.name === newEntry.name)
+        return exists ? prev : [...prev, newEntry]
+      })
     }
-  }, [cryptoData]);
+  }, [cryptoData])
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
+    localStorage.removeItem('token')
+    navigate('/login')
+  }
 
   return (
     <Box
@@ -57,7 +66,6 @@ const SearchCryptoComponent = () => {
       }}
     >
       <Container maxWidth="sm">
-        <Typography variant="h2" component="h1" align="center" color="#E3E3FF" marginBottom="32px">
         <IconButton
           onClick={handleLogout}
           sx={{
@@ -76,7 +84,7 @@ const SearchCryptoComponent = () => {
           <LogoutIcon fontSize="large" />
         </IconButton>
 
-        <Typography variant="h2" component="h1" align="center" color='#E3E3FF' marginBottom='32px'>
+        <Typography variant="h2" component="h1" align="center" color="#E3E3FF" marginBottom="32px">
           Crypto Coins Master
         </Typography>
 
@@ -84,12 +92,12 @@ const SearchCryptoComponent = () => {
           <CardContent sx={{ backgroundColor: '#1A1F2B' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               <TextField
-                label="Search Crypto"
+                label="Buscar Crypto"
                 variant="outlined"
                 inputRef={inputRef}
                 fullWidth
                 error={hasError}
-                helperText={hasError ? 'This field is required' : ''}
+                helperText={hasError ? 'Campo obrigatório' : ''}
                 sx={{
                   input: { color: '#E3E3FF' },
                   label: {
@@ -103,27 +111,6 @@ const SearchCryptoComponent = () => {
                   },
                 }}
               />
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-  <TextField
-    label="Buscar Crypto"
-    variant="outlined"
-    inputRef={inputRef}
-    fullWidth
-    error={hasError}
-    helperText={hasError ? "Campo obrigatório" : ""}
-    sx={{
-      input: { color: '#E3E3FF' },
-      label: {
-        color: '#E3E3FF',
-        '&.Mui-focused': { color: '#E3E3FF' },
-      },
-      '& .MuiOutlinedInput-root': {
-        '& fieldset': { borderColor: '#E3E3FF' },
-        '&:hover fieldset': { borderColor: '#E3E3FF' },
-        '&.Mui-focused fieldset': { borderColor: '#E3E3FF' },
-      },
-    }}
-  />
 
               <Button
                 variant="contained"
@@ -133,18 +120,8 @@ const SearchCryptoComponent = () => {
                 }}
                 onClick={handleSearch}
               >
-                Search
+                Pesquisar
               </Button>
-  <Button
-    variant="contained"
-    sx={{
-      backgroundColor: '#FF00AA',
-      '&:hover': { backgroundColor: '#ad0174' },
-    }}
-    onClick={handleSearch}
-  >
-    Pesquisar
-  </Button>
 
               {loading && (
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -161,7 +138,6 @@ const SearchCryptoComponent = () => {
           </CardContent>
         </Card>
 
-        {/* Resultado atual */}
         {cryptoData && (
           <Container maxWidth="sm" sx={{ mt: 4 }}>
             <Box
@@ -208,7 +184,6 @@ const SearchCryptoComponent = () => {
           </Container>
         )}
 
-        {/* Histórico de buscas */}
         {searchHistory.length > 0 && (
           <Container maxWidth="sm" sx={{ mt: 4 }}>
             <Typography variant="h6" color="#E3E3FF" gutterBottom>
@@ -269,7 +244,7 @@ const SearchCryptoComponent = () => {
         )}
       </Container>
     </Box>
-  );
-};
+  )
+}
 
-export default SearchCryptoComponent;
+export default SearchCryptoComponent
