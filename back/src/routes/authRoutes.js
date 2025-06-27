@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
 const { autenticarToken } = require('../middleware/authMiddleware');
+const rateLimiter = require('../middleware/rateLimiter');
 
 // Utilitário para data e hora formatada
 function log(msg) {
@@ -11,7 +12,7 @@ function log(msg) {
 }
 
 // POST /login
-router.post('/', async (req, res) => {
+router.post('/', rateLimiter, async (req, res) => {
   const { email, senha } = req.body;
   log(`Requisição de login recebida. Email: ${email}`);
 
