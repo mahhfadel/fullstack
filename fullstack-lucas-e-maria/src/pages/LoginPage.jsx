@@ -1,7 +1,7 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PasswordField from '../components/PasswordField';
-import { Box, Button, Card, CardContent, Container, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material';
 
 function Login() {
     const emailRef = useRef();
