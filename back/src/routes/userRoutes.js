@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
 router.get('/', autenticarToken, autorizarRoles('admin'), async (req, res) => {
   try {
     log(`Usuário ${req.usuario.email} requisitou lista de usuários`);
-    const usuarios = await User.find().select('-senha'); // remove senha
+    const usuarios = await User.find()// remove senha
     res.status(200).json(usuarios);
   } catch (err) {
     log(`Erro ao buscar usuários: ${err.message}`);
