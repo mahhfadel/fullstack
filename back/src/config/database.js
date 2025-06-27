@@ -6,8 +6,6 @@ const uri = process.env.MONGO_URI;
 async function connectDB() {
   try {
     await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       maxPoolSize: 50,
     });
 

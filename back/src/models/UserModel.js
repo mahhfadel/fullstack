@@ -22,8 +22,4 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-userSchema.methods.verificarSenha = async function (senhaDigitada) {
-  return await bcrypt.compare(senhaDigitada, this.senha);
-};
-
 module.exports = mongoose.model('User', userSchema);

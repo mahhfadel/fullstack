@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import PasswordField from '../components/PasswordField';
 import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://localhost:8000';
+
 function Login() {
     const emailRef = useRef();
     const senhaRef = useRef();
@@ -19,9 +21,8 @@ function Login() {
             return;
         }
 
-
         try {
-            const resposta = await fetch('/login', {
+            const resposta = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, senha }),

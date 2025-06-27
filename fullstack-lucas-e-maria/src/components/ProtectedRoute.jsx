@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://localhost:8000';
+
 export function ProtectedRoute({ children }) {
   const [isValid, setIsValid] = useState(null)
 
@@ -9,7 +11,7 @@ export function ProtectedRoute({ children }) {
     const token = localStorage.getItem("token")
     if (!token) return setIsValid(false)
 
-    fetch("/login/validate-token", {
+    fetch(`${API_BASE_URL}/login/validate-token`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

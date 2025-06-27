@@ -2,7 +2,6 @@
   "name": "fullstack-lucas-e-maria",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://localhost:8000",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -20,10 +19,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "cross-env REACT_APP_API_URL=https://localhost:8000 react-scripts start",
+    "start:prod": "cross-env REACT_APP_API_URL=https://fullstack-rvm2.onrender.com/ react-scripts start"
   },
   "eslintConfig": {
     "extends": [
@@ -42,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

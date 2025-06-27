@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { autenticarToken } = require('../middleware/authMiddleware');
 const rateLimiter = require('../middleware/rateLimiter');
 
@@ -10,6 +11,10 @@ function log(msg) {
   const now = new Date().toLocaleString('pt-BR');
   console.log(`[${now}] ${msg}`);
 }
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
 // POST /login
 router.post('/', rateLimiter, async (req, res) => {
@@ -28,7 +33,8 @@ router.post('/', rateLimiter, async (req, res) => {
       return res.status(401).json({ message: 'Usuário não encontrado.' });
     }
 
-    const senhaValida = await usuario.verificarSenha(senha);
+    const senhaValida = bcrypt.compare(senha, usuario.senha);
+    await delay(1000); 
     if (!senhaValida) {
       log(`Erro: Senha inválida para o usuário ${email}`);
       return res.status(401).json({ message: 'Senha inválida.' });

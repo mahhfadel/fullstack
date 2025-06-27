@@ -16,6 +16,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom'
 import { CryptoContext } from '../contexts/SearchCryptoContext'
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://localhost:8000';
+
 const SearchCryptoComponent = () => {
   const inputRef = useRef()
   const [hasError, setHasError] = useState(false)
@@ -31,7 +33,7 @@ const SearchCryptoComponent = () => {
   const fetchSearchHistory = async (page = 1) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`/search-history?page=${page}`, {
+      const response = await fetch(`${API_BASE_URL}/search-history?page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -65,7 +67,7 @@ const SearchCryptoComponent = () => {
     try {
       if (!cryptoData?.name) return
 
-      const resposta = await fetch('/search-history', {
+      const resposta = await fetch(`${API_BASE_URL}/search-history`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +94,7 @@ const SearchCryptoComponent = () => {
 
   const handleClearHistory = async () => {
     try {
-      const resposta = await fetch('/search-history', {
+      const resposta = await fetch(`${API_BASE_URL}/search-history`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

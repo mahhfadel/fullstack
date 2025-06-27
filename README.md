@@ -78,7 +78,11 @@ cd fullstack-lucas-e-maria
 npm install
 
 4. **Inicie o servidor de desenvolvimento frontend:**
-npm start
+Para uso de backend local
+npm start 
+
+Para uso de backend remoto (pode demorar um pouco para ligar pois por se tratar de uma hospedagem gratuita ela não fica o tempo todo disponivel, verifique o status por esse link "https://fullstack-rvm2.onrender.com/")
+npm run start:prod
 
 5. **Abra um novo prompt:**
 

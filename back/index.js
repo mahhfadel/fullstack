@@ -3,6 +3,7 @@
 const express = require('express');
 const path = require('path');
 const connectDB = require('./src/config/database');
+const cors = require('cors');
 
 // rotas
 const userRoutes = require('./src/routes/userRoutes');
@@ -26,7 +27,18 @@ app.use((req, res, next) => {
   }
 });
 
-// Conecta ao banco de dados
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://fullstack-dun-delta.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://fullstack-dun-delta.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 connectDB();
 
 // Middleware para ler JSON
@@ -34,7 +46,7 @@ app.use(express.json());
 
 // Rota de teste base
 app.get('/', (req, res) => {
-  res.send('Você está na API do projeto fullstack do Lucas e da Maria');
+  res.send('Você está na API do projeto fullstack do Lucas e da Maria e ela está funcionando');
 });
 
 // Suas rotas
