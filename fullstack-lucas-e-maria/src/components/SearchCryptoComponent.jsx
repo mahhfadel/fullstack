@@ -10,45 +10,103 @@ import {
   CircularProgress,
   IconButton,
 } from '@mui/material'
-import LogoutIcon from '@mui/icons-material/Logout'
+import LogoutIcon from '@mui/icons-material/Logout';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useNavigate } from 'react-router-dom'
 import { CryptoContext } from '../contexts/SearchCryptoContext'
 
 const SearchCryptoComponent = () => {
   const inputRef = useRef()
   const [hasError, setHasError] = useState(false)
-  const { fetchCrypto, cryptoData, loading, apiError } = useContext(CryptoContext)
+  const [erro, setErro] = useState('')
   const [searchHistory, setSearchHistory] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const { fetchCrypto, cryptoData, loading, apiError } = useContext(CryptoContext)
   const navigate = useNavigate()
 
-  const handleSearch = () => {
+  const token = localStorage.getItem('token')
+
+  const fetchSearchHistory = async (page = 1) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/search-history?page=${page}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('Erro ao buscar histórico.');
+
+      const data = await response.json();
+      setSearchHistory(data.resultado); // array de buscas
+      setTotalPages(data.totalPaginas); // ou calcule baseado em data.total
+      setCurrentPage(page);
+    } catch (error) {
+      console.error(error);
+      setHasError('Erro ao carregar histórico.');
+    }
+  };
+
+  useEffect(() => {
+    fetchSearchHistory(1);
+  }, []);
+
+  const handleSearch = async () => {
     const query = inputRef.current.value.trim()
     if (!query) {
       setHasError(true)
       return
     }
     setHasError(false)
-    fetchCrypto(query)
-  }
+    await fetchCrypto(query)
 
-  const handleClearHistory = () => {
-    setSearchHistory([])
-  }
+    try {
+      if (!cryptoData?.name) return
 
-  useEffect(() => {
-    if (cryptoData) {
-      const newEntry = {
-        name: cryptoData.name,
-        symbol: cryptoData.symbol.toUpperCase(),
-        price: cryptoData.market_data.current_price.usd,
+      const resposta = await fetch('/search-history', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          cryptoName: cryptoData.name,
+          symbol: cryptoData.symbol.toUpperCase(),
+          price: cryptoData.market_data.current_price.usd.toString(),
+        }),
+      })
+
+      if (!resposta.ok) {
+        const dados = await resposta.json()
+        throw new Error(dados.message || 'Erro ao salvar busca')
       }
 
-      setSearchHistory((prev) => {
-        const exists = prev.some((item) => item.name === newEntry.name)
-        return exists ? prev : [...prev, newEntry]
-      })
+      fetchSearchHistory()
+    } catch (err) {
+      console.error(err)
+      setErro('Erro ao salvar no histórico')
     }
-  }, [cryptoData])
+  }
+
+  const handleClearHistory = async () => {
+    try {
+      const resposta = await fetch('/search-history', {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!resposta.ok) throw new Error('Erro ao limpar histórico')
+
+      setSearchHistory([])
+    } catch (err) {
+      console.error(err)
+      setErro('Erro ao limpar histórico')
+    }
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -84,7 +142,7 @@ const SearchCryptoComponent = () => {
           <LogoutIcon fontSize="large" />
         </IconButton>
 
-        <Typography variant="h2" component="h1" align="center" color="#E3E3FF" marginBottom="32px">
+        <Typography variant="h2" align="center" color="#E3E3FF" mb={4}>
           Crypto Coins Master
         </Typography>
 
@@ -129,9 +187,9 @@ const SearchCryptoComponent = () => {
                 </Box>
               )}
 
-              {apiError && (
+              {erro && (
                 <Typography color="error" align="center">
-                  {apiError}
+                  {erro}
                 </Typography>
               )}
             </Box>
@@ -186,7 +244,7 @@ const SearchCryptoComponent = () => {
 
         {searchHistory.length > 0 && (
           <Container maxWidth="sm" sx={{ mt: 4 }}>
-            <Typography variant="h6" color="#E3E3FF" gutterBottom>
+            <Typography variant="h6" color="#E3E3FF" align='center' gutterBottom>
               Histórico de Buscas
             </Typography>
             <Box
@@ -211,18 +269,54 @@ const SearchCryptoComponent = () => {
                   <th>Crypto</th>
                   <th>Symbol</th>
                   <th>Price (USD)</th>
+                  <th>Date</th>
                 </tr>
               </thead>
               <tbody>
                 {searchHistory.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.name}</td>
+                    <td>{item.cryptoName}</td>
                     <td>{item.symbol}</td>
-                    <td>${item.price.toLocaleString()}</td>
+                    <td>${parseFloat(item.price).toLocaleString()}</td>
+                    <td>{new Date(item.searchedAt).toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>
             </Box>
+
+            <Box display="flex" justifyContent="center" alignItems="center" gap="12" mt={2}>
+
+              <IconButton
+                variant="outlined"
+                disabled={currentPage === 1}
+                onClick={() => fetchSearchHistory(currentPage - 1)}
+                sx={{
+                  borderColor: '#FF00AA',
+                  color: '#FF00AA',
+                  '&:hover': { color: 'white' },
+                }}
+              >
+                <ArrowBackIosIcon fontSize="large" />
+              </IconButton>
+
+              <Typography color="#E3E3FF" align="center" sx={{ pt: 1 }}>
+                Página {currentPage} de {totalPages}
+              </Typography>
+
+              <IconButton
+                variant="outlined"
+                disabled={currentPage === totalPages}
+                onClick={() => fetchSearchHistory(currentPage + 1)}
+                sx={{
+                  borderColor: '#FF00AA',
+                  color: '#FF00AA',
+                  '&:hover': { color: 'white' },
+                }}
+              >
+                <ArrowForwardIosIcon fontSize="large" />
+              </IconButton>
+            </Box>
+
 
             <Button
               variant="outlined"
@@ -248,4 +342,3 @@ const SearchCryptoComponent = () => {
 }
 
 export default SearchCryptoComponent
-//

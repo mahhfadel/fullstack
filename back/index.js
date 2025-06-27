@@ -4,6 +4,7 @@ const connectDB = require('./src/config/database');
 //rotas
 const userRoutes = require('./src/routes/userRoutes');
 const authRoutes = require('./src/routes/authRoutes');
+const searchHistory = require('./src/routes/searchHistoryRoutes');
 
 const app = express();
 const port = 8000;
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.use('/users', userRoutes);
 app.use('/login', authRoutes);
+app.use('/search-history', searchHistory);
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
