@@ -100,7 +100,7 @@ Acesse a aplicação em http://localhost:3000/login.
 ```
 ---
 
-📌 ## Observações importantes
+## 📌 Observações importantes
 - Senhas são armazenadas de forma segura utilizando bcrypt.
 - Tokens JWT expiram após 2 horas para maior segurança.
 - O histórico de buscas é armazenado por usuário e pode ser paginado e gerenciado via API.
