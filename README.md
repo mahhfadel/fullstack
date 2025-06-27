@@ -88,13 +88,17 @@ cd back
 7. **Instale as dependências:**
 npm install
 
-8. **Gere certificados SSL para HTTPS local**
+8. **Gere certificados SSL para HTTPS loca:**
 openssl req -nodes -new -x509 -keyout key.pem -out cert.pem -days 365
 
-9. **Inicie o servidor de desenvolvimento backend:**
+9. **Crie um arquivo .env na raiz do backend com as variáveis:**
+MONGO_URI=
+JWT_SECRET=
+
+10. **Inicie o servidor de desenvolvimento backend:**
 npm run dev
 
-9. **Pode ser necessário abrir https://localhost:8000 e aceitar o aviso de segurança manualmente**
+11. **Pode ser necessário abrir https://localhost:8000 e aceitar o aviso de segurança manualmente**
 
 Acesse a aplicação em http://localhost:3000/login.
 ```
@@ -104,6 +108,6 @@ Acesse a aplicação em http://localhost:3000/login.
 - Senhas são armazenadas de forma segura utilizando bcrypt.
 - Tokens JWT expiram após 2 horas para maior segurança.
 - O histórico de buscas é armazenado por usuário e pode ser paginado e gerenciado via API.
-- Certifique-se de configurar o whitelist de IP no MongoDB Atlas para permitir conexões.
+**- Certifique-se de configurar o whitelist de IP no MongoDB Atlas para permitir conexões.**
 - Utilize HTTPS no backend para evitar problemas de segurança, mesmo no ambiente local.
 - Logs detalhados ajudam a monitorar o sistema e identificar falhas ou acessos indevidos.
