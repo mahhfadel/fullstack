@@ -1,5 +1,3 @@
-import React, { useRef, useState, useContext } from 'react';
-import { Box, Button, Card, CardContent, Container, TextField, Typography, CircularProgress } from '@mui/material';
 import SearchCryptoComponent from '../components/SearchCryptoComponent';
 import { CryptoProvider } from '../contexts/SearchCryptoContext';
 

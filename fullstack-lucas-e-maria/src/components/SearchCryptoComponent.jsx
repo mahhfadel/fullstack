@@ -23,7 +23,7 @@ const SearchCryptoComponent = () => {
   const [searchHistory, setSearchHistory] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const { fetchCrypto, cryptoData, loading, apiError } = useContext(CryptoContext)
+  const { fetchCrypto, cryptoData, loading } = useContext(CryptoContext)
   const navigate = useNavigate()
 
   const token = localStorage.getItem('token')
